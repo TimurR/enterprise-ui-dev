@@ -45,3 +45,20 @@ jobs:
         name: Install modules from npm
       - name: Check formatting with Prettier
         run: npm run format:check
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test -- --coverage
+      - uses: actions/upload-artifact@v3
+        name: Active coverage report
+        with:
+          name: coverage-report
+          path: coverage
